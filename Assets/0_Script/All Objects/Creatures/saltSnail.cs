@@ -13,6 +13,9 @@ public class saltSnail : Animal
     private float mRoamTimer;
     private float mCurrentRoamTimer;
     private float mCurrentWaitTimer;
+    public float saltRegenerateTimer = 5.0f;
+    private float mCurrentSaltRegenerateTimer;
+    private bool mIsHidden;
 
     void Start()
     {
@@ -21,12 +24,25 @@ public class saltSnail : Animal
         anim = GetComponent<Animator>();
         target = GameObject.FindWithTag("Player").transform;
         mCurrentWaitTimer = 5.0f;
+        mCurrentSaltRegenerateTimer = saltRegenerateTimer;
         mIsPickUpable = false;
+        mIsHidden = true;
+        anim.SetBool("isPickUpable", mIsPickUpable);
     }
 
     void FixedUpdate()
     {
         CheckDistance();
+
+        if (mCurrentSaltRegenerateTimer > 0.0f)
+        {
+            mCurrentSaltRegenerateTimer -= Time.deltaTime;
+        }
+        else
+        {
+            mIsPickUpable = mIsHidden;
+            anim.SetBool("isPickUpable", true);
+        }
     }
 
     void CheckDistance()
@@ -47,9 +63,10 @@ public class saltSnail : Animal
             ChangeState(AnimalState.hide);
             anim.SetBool("wakeUp", false);
         }
-        
+
         // Pick up 가능 여부 확인 - Hidden state인지?
-        mIsPickUpable = anim.GetCurrentAnimatorStateInfo(0).IsName("Hidden");
+        mIsHidden = anim.GetCurrentAnimatorStateInfo(0).IsName("Hidden") || anim.GetCurrentAnimatorStateInfo(0).IsName("NsaltSnail_Stop");
+
         // Hidden 타이머
         mCurrentWaitTimer -= Time.fixedDeltaTime;
 
@@ -141,12 +158,12 @@ public class saltSnail : Animal
 
     public override bool PickUp()
     {
-        if (mIsPickUpable == true)
+        if (mIsHidden == true && mIsPickUpable == true)
         {
+            mIsPickUpable = false;
+            anim.SetBool("isPickUpable", false);
+            mCurrentSaltRegenerateTimer = saltRegenerateTimer;
             return base.PickUp();  // 인벤토리에 넣기
-            // 시작: 달팽이 pick up할 때 처리
-            // ...
-            // 끝
         }
 
         return false;
