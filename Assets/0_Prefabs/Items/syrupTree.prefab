@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4038518884166445742}
   - component: {fileID: 4865585520094459354}
   - component: {fileID: 4425182107670165434}
-  - component: {fileID: 5992016890378416349}
   m_Layer: 0
   m_Name: syrupTree
   m_TagString: PickUp Object
@@ -102,15 +101,17 @@ MonoBehaviour:
   playerInventory: {fileID: 11400000, guid: bc14e62c4e215604e9cac227700a7e72, type: 2}
   thisItem: {fileID: 11400000, guid: 2f9a6542bfcd95045bae1cd0ea3ace46, type: 2}
   pickUpText: {fileID: 0}
+  specialId: 3
   stages:
   - sprite: {fileID: -1184261150, guid: 687b195d02bca324cb46b68ac57a6d91, type: 3}
-    secondsInThisStage: 96
+    secondsInThisStage: 5
     isPickUpable: 0
     runAnimation: 1
   - sprite: {fileID: -1100815445, guid: 46dd3d9f79a64bf4b81ab12f0a013044, type: 3}
     secondsInThisStage: 0
     isPickUpable: 1
     runAnimation: 1
+  controller: {fileID: 9100000, guid: d2d3e6f17825a734eaeff35bb7fb8165, type: 2}
 --- !u!61 &4425182107670165434
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -156,24 +157,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.946215, y: 0.9595356}
   m_EdgeRadius: 0
---- !u!95 &5992016890378416349
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2071655814072003282}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d2d3e6f17825a734eaeff35bb7fb8165, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
