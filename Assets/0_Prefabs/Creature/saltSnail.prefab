@@ -118,15 +118,15 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3046893758375521041}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 20
-  m_LinearDrag: 0
+  m_Mass: 200
+  m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 16950c60f9e2dd142a9b5f106d42e97e, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -159,6 +159,7 @@ MonoBehaviour:
   hideRadius: 5
   homePosition: {fileID: 0}
   anim: {fileID: 2946549194559771319}
+  saltRegenerateTimer: 5
 --- !u!61 &2644206057761221874
 BoxCollider2D:
   m_ObjectHideFlags: 0

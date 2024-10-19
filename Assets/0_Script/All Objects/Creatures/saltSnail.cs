@@ -52,8 +52,12 @@ public class saltSnail : Animal
         // 숨는 범위 안으로 플레이어가 들어오면
         if(distance <= hideRadius)
         {
-            // 움직임 X
+            // 움직임 X]
             anim.SetBool("isMoving", false);
+            if (currentState != AnimalState.hide)
+            {
+                myRigidbody.velocity = Vector2.zero;
+            }
 
             // 움직이기 타이머 X
             mCurrentRoamTimer = 0.0f;
@@ -114,7 +118,8 @@ public class saltSnail : Animal
                 {
                     Vector2 moveVelocity = new Vector2(mCurrentRoamDirection.x * moveSpeed, mCurrentRoamDirection.y * moveSpeed);
                     changeAnim(new Vector2(mCurrentRoamDirection.x, mCurrentRoamDirection.y));
-                    myRigidbody.MovePosition(transform.position + new Vector3(moveVelocity.x, moveVelocity.y, 1.0f) * Time.fixedDeltaTime);
+                    //myRigidbody.MovePosition(transform.position + new Vector3(moveVelocity.x, moveVelocity.y, 1.0f) * Time.fixedDeltaTime);
+                    myRigidbody.velocity = moveVelocity;
                 }
 
                 mCurrentRoamTimer -= Time.fixedDeltaTime;
