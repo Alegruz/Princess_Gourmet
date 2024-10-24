@@ -133,6 +133,18 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 54cc90901569bc34f8719081c9749779, type: 3}
     Volumn: 1
     loop: 1
+  - name: metal hit
+    clip: {fileID: 8300000, guid: 36094868598344f4e85a62c29138785c, type: 3}
+    Volumn: 1
+    loop: 0
+  - name: hit metal wrench
+    clip: {fileID: 8300000, guid: f19f16b164923db449776e0988248342, type: 3}
+    Volumn: 1
+    loop: 0
+  - name: whoosh
+    clip: {fileID: 8300000, guid: 3ef1a81d321e50348a7338d79bd17b1d, type: 3}
+    Volumn: 1
+    loop: 0
 --- !u!1 &6454370040049424550
 GameObject:
   m_ObjectHideFlags: 0

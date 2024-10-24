@@ -25,7 +25,7 @@ public class PlayerManager : MonoBehaviour
     public DialogueManager manager;
     // 오브젝트 조사
     float h;
-    float v; 
+    float v;
     Vector3 dirVec;
     GameObject scanObject;
 
@@ -59,6 +59,7 @@ public class PlayerManager : MonoBehaviour
     private AudioManager theAudio;
     private Vector3Int mPreviousTilePosition = Vector3Int.zero;
     private bool mbHasInitializedPreviousTilePosition = false;
+    private bool mbHasHit = false;
     void Start()
     {
         // Limit the framerate to 30
@@ -458,8 +459,24 @@ public class PlayerManager : MonoBehaviour
         theAudio.Play(currentWalkSound);
     }
 
+    public void OnFriedPanWhoosh()
+    {
+        theAudio = FindObjectOfType<AudioManager>();
+        theAudio.Play("whoosh");
+    }
+
     public void OnFriedPanHit()
     {
         theAudio = FindObjectOfType<AudioManager>();
+        if (mbHasHit == true)
+        {
+            theAudio.Play("metal hit");
+            mbHasHit = false;
+        }
+    }
+
+    public void OnKnockback()
+    {
+        mbHasHit = true;
     }
 }
