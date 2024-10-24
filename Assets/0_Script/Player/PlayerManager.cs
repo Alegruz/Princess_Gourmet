@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Tilemaps;
+using Unity.VisualScripting;
+using UnityEngine.InputSystem.LowLevel;
 
 public enum PlayerState
 {
@@ -48,8 +51,14 @@ public class PlayerManager : MonoBehaviour
     public string walkSound;
     public string runSound;
     public string pickUpSound;
+    public List<Tilemap> grassTilemaps;
+    public List<Tilemap> rockTilemaps;
+    public List<Tilemap> woodTilemaps;
+    private Tilemap currentTilemapOrNull;
+    private string currentWalkSound;
     private AudioManager theAudio;
-
+    private Vector3Int mPreviousTilePosition = Vector3Int.zero;
+    private bool mbHasInitializedPreviousTilePosition = false;
     void Start()
     {
         // Limit the framerate to 30
@@ -105,90 +114,152 @@ public class PlayerManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 오브젝트 조사
-            //Ray 
-            Debug.DrawRay(myRigidbody.position, dirVec * 2.0f, new Color(0,1,0));
-            RaycastHit2D rayHit = Physics2D.Raycast(myRigidbody.position, dirVec, 2.0f, LayerMask.GetMask("Object_goldmetal"));
+        bool bHasFoundTile = false;
 
-            if(rayHit.collider != null)
+        if (grassTilemaps.Count > 0)
+        {
+            foreach (var grassTilemap in grassTilemaps)
             {
-                scanObject = rayHit.collider.gameObject;
+                Vector3Int grassTilePosition = grassTilemap.WorldToCell(transform.position);
+                if (mbHasInitializedPreviousTilePosition == false || mPreviousTilePosition != grassTilePosition)
+                {
+                    if (grassTilemap.HasTile(grassTilePosition))
+                    {
+                        mPreviousTilePosition = grassTilePosition;
+                        mbHasInitializedPreviousTilePosition = true;
+                        currentTilemapOrNull = grassTilemap;
+                        currentWalkSound = walkSound + "_grass";
+                        bHasFoundTile = true;
+                        break;
+                    }
+                }
             }
-            else
+        }
+
+        if (rockTilemaps.Count > 0 && bHasFoundTile == false)
+        {
+            foreach (var rockTilemap in rockTilemaps)
             {
-                scanObject = null;
+                Vector3Int rockTilePosition = rockTilemap.WorldToCell(transform.position);
+                if (mbHasInitializedPreviousTilePosition == false || mPreviousTilePosition != rockTilePosition)
+                {
+                    if (rockTilemap.HasTile(rockTilePosition))
+                    {
+                        mPreviousTilePosition = rockTilePosition;
+                        mbHasInitializedPreviousTilePosition = true;
+                        currentTilemapOrNull = rockTilemap;
+                        currentWalkSound = walkSound + "_rock";
+                        bHasFoundTile = true;
+                        break;
+                    }
+                }
             }
+        }
+
+        if (woodTilemaps.Count > 0 && bHasFoundTile == false)
+        {
+            foreach (var woodTilemap in woodTilemaps)
+            {
+                Vector3Int woodTilePosition = woodTilemap.WorldToCell(transform.position);
+                if (mbHasInitializedPreviousTilePosition == false || mPreviousTilePosition != woodTilePosition)
+                {
+                    if (woodTilemap.HasTile(woodTilePosition))
+                    {
+                        mPreviousTilePosition = woodTilePosition;
+                        mbHasInitializedPreviousTilePosition = true;
+                        currentTilemapOrNull = woodTilemap;
+                        currentWalkSound = walkSound + "_rock";
+                        bHasFoundTile = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // 오브젝트 조사
+        //Ray 
+        Debug.DrawRay(myRigidbody.position, dirVec * 2.0f, new Color(0, 1, 0));
+        RaycastHit2D rayHit = Physics2D.Raycast(myRigidbody.position, dirVec, 2.0f, LayerMask.GetMask("Object_goldmetal"));
+
+        if (rayHit.collider != null)
+        {
+            scanObject = rayHit.collider.gameObject;
+        }
+        else
+        {
+            scanObject = null;
+        }
 
         change = Vector3.zero;
-        change.x = Input.GetAxisRaw ("Horizontal");
-        change.y = Input.GetAxisRaw ("Vertical"); 
+        change.x = Input.GetAxisRaw("Horizontal");
+        change.y = Input.GetAxisRaw("Vertical");
 
         // 아이템 줍기 
-            //당근 줍기
-            if (mCurrentCollidingItems.Count > 0)
+        //당근 줍기
+        if (mCurrentCollidingItems.Count > 0)
+        {
+            if (!hasConsumedSpaceKey && Input.GetKeyDown(KeyCode.Space))
             {
-                if (!hasConsumedSpaceKey && Input.GetKeyDown(KeyCode.Space))
+                GameObject itemGameObjectToPickUp = mCurrentCollidingItems[0];
+                PhysicalInventoryItem physicalInventoryItem = itemGameObjectToPickUp.GetComponent<PhysicalInventoryItem>();
+                bool hasPickedUpObject = physicalInventoryItem.PickUp();
+
+                mCurrentCollidingItems.RemoveAt(0);
+                Destroy(itemGameObjectToPickUp);
+                hasConsumedSpaceKey = true;
+
+                if (hasPickedUpObject)
                 {
-                    GameObject itemGameObjectToPickUp = mCurrentCollidingItems[0];
-                    PhysicalInventoryItem physicalInventoryItem = itemGameObjectToPickUp.GetComponent<PhysicalInventoryItem>();
-                    bool hasPickedUpObject = physicalInventoryItem.PickUp();
-                    
-                    mCurrentCollidingItems.RemoveAt(0);
-                    Destroy(itemGameObjectToPickUp);
-                    hasConsumedSpaceKey = true;
-                    
-                    if (hasPickedUpObject)
-                    {
-                        //AudioManager 추가 
-                        theAudio = FindObjectOfType<AudioManager>(); 
-                        //AudioManager pickUp sound
-                        theAudio.Play(pickUpSound);
-                    }
+                    //AudioManager 추가 
+                    theAudio = FindObjectOfType<AudioManager>();
+                    //AudioManager pickUp sound
+                    theAudio.Play(pickUpSound);
                 }
             }
-            
-            //시럽나무 줍기
-            if (mCurrentPickUpObjects.Count > 0) 
+        }
+
+        //시럽나무 줍기
+        if (mCurrentPickUpObjects.Count > 0)
+        {
+            if (!hasConsumedSpaceKey && Input.GetKeyDown(KeyCode.Space))
             {
-                if (!hasConsumedSpaceKey && Input.GetKeyDown(KeyCode.Space))
+                GameObject itemGameObjectToPickUp = mCurrentPickUpObjects[0];
+                bool hasPickedUpObject = itemGameObjectToPickUp.GetComponent<PhysicalInventoryItem>().PickUp();
+
+                hasConsumedSpaceKey = true;
+
+                if (hasPickedUpObject)
                 {
-                    GameObject itemGameObjectToPickUp = mCurrentPickUpObjects[0];
-                    bool hasPickedUpObject = itemGameObjectToPickUp.GetComponent<PhysicalInventoryItem>().PickUp();
-                    
-                    hasConsumedSpaceKey = true;
-                    
-                    if (hasPickedUpObject)
-                    {
-                        //AudioManager 추가 
-                        theAudio = FindObjectOfType<AudioManager>(); 
-                        //AudioManager pickUp sound
-                        theAudio.Play(pickUpSound);
-                    }
+                    //AudioManager 추가 
+                    theAudio = FindObjectOfType<AudioManager>();
+                    //AudioManager pickUp sound
+                    theAudio.Play(pickUpSound);
                 }
             }
+        }
 
         // 젤다 튜토리얼 - 플레이어 기본 움직임 셋팅 
-            if (hasConsumedSpaceKey && Input.GetKeyDown(KeyCode.Space) == false)
-            {
-                hasConsumedSpaceKey = false;
-            }
+        if (hasConsumedSpaceKey && Input.GetKeyDown(KeyCode.Space) == false)
+        {
+            hasConsumedSpaceKey = false;
+        }
 
-            if(Input.GetButtonDown("attack") && currentState != PlayerState.attack
-                && currentState != PlayerState.stagger)
-            {   
-                StartCoroutine(AttackCo());
-            }
-            
-            if (mIsKnockingBack == false)
-            {
-                myRigidbody.velocity = Vector2.zero;
-            }
+        if (Input.GetButtonDown("attack") && currentState != PlayerState.attack
+            && currentState != PlayerState.stagger)
+        {
+            StartCoroutine(AttackCo());
+        }
 
-            if(currentState == PlayerState.walk || currentState == PlayerState.run
-                || currentState == PlayerState.idle)
-            {
-                UpdateAnimationAndMove();
-            }
+        if (mIsKnockingBack == false)
+        {
+            myRigidbody.velocity = Vector2.zero;
+        }
+
+        if (currentState == PlayerState.walk || currentState == PlayerState.run
+            || currentState == PlayerState.idle)
+        {
+            UpdateAnimationAndMove();
+        }
     }
 
     private IEnumerator AttackCo()
@@ -302,10 +373,7 @@ public class PlayerManager : MonoBehaviour
     void MoveCharacter()
     {
         change.Normalize();
-        myRigidbody.MovePosition
-        (
-            transform.position + change * speed * Time.fixedDeltaTime
-        );
+        myRigidbody.velocity = change * speed;
     }
 
     public void Knock(float knockTime, float damage)
@@ -343,48 +411,32 @@ public class PlayerManager : MonoBehaviour
     //넉백 스크립트에서 자꾸 player.currentstate 프로텍션 레벨 때문에 접근을 못한다고 해서
     //위에 playerstate 선언한거 퍼블릭으로 바꾸고 밑에 리턴을 주니까 해결했음. 맞나??
     {
-        theAudio = FindObjectOfType<AudioManager>();
-        if (currentState != newState)
-        {
-            if (currentState == PlayerState.walk)
-            {
-                theAudio.SetLoopCancel(walkSound);
-                theAudio.Stop(walkSound);
-            }
-            else if (currentState == PlayerState.run)
-            {
-                theAudio.SetLoopCancel(runSound);
-                theAudio.Stop(runSound);
-            }
-        }
 
         switch (newState)
         {
             case PlayerState.walk:
-            speed = walkSpeed;
-            theAudio.Play(walkSound);
-            theAudio.SetLoop(walkSound);
-            break;
+                speed = walkSpeed;
+                animator.speed = 1.0f;
+                break;
             case PlayerState.run:
-            speed = runSpeed;
-            theAudio.Play(runSound);
-            theAudio.SetLoop(runSound);
-            break;
+                speed = runSpeed;
+                animator.speed = runSpeed / walkSpeed;
+                break;
             case PlayerState.attack:
-            speed = 0;
-            break;
+                speed = 0;
+                break;
             // case PlayerState.interact:
             // speed = 0;
             // break;
             case PlayerState.stagger:
-            speed = 0;
-            break;
+                speed = 0;
+                break;
             case PlayerState.idle:
-            speed = 0;
-            break;
+                speed = 0;
+                break;
             default:
-            Assert.IsTrue(false);
-            break;
+                Assert.IsTrue(false);
+                break;
         }
         currentState = newState;
         return currentState;
@@ -398,5 +450,16 @@ public class PlayerManager : MonoBehaviour
     public List<GameObject> GetCurrentPickUpObjects()
     {
         return mCurrentPickUpObjects;
+    }
+
+    public void OnFootStep()
+    {
+        theAudio = FindObjectOfType<AudioManager>();
+        theAudio.Play(currentWalkSound);
+    }
+
+    public void OnFriedPanHit()
+    {
+        theAudio = FindObjectOfType<AudioManager>();
     }
 }

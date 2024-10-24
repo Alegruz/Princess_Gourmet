@@ -13000,6 +13000,22 @@ PrefabInstance:
       propertyPath: manager
       value: 
       objectReference: {fileID: 1314060311}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: woodTilemaps.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: grassTilemaps.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: woodTilemaps.Array.data[0]
+      value: 
+      objectReference: {fileID: 1523642562}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: grassTilemaps.Array.data[0]
+      value: 
+      objectReference: {fileID: 947199184}
     - target: {fileID: 3779406437340744730, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
       propertyPath: m_Name
       value: Player

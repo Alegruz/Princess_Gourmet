@@ -8005,6 +8005,26 @@ PrefabInstance:
       propertyPath: manager
       value: 
       objectReference: {fileID: 55456636}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: rockTilemaps.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: grassTilemaps.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: rockTilemaps.Array.data[0]
+      value: 
+      objectReference: {fileID: 1309809239}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: rockTilemaps.Array.data[1]
+      value: 
+      objectReference: {fileID: 1987856650}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: grassTilemaps.Array.data[0]
+      value: 
+      objectReference: {fileID: 1356524984}
     - target: {fileID: 3403718217658400779, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
       propertyPath: m_Enabled
       value: 1

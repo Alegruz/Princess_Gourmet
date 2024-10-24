@@ -117,14 +117,22 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 920069d121644464886852dcfe1704db, type: 3}
     Volumn: 1
     loop: 0
-  - name: player_walk
-    clip: {fileID: 8300000, guid: e65d8aeec5ede394397d484ab9e8262d, type: 3}
+  - name: player_walk_grass
+    clip: {fileID: 8300000, guid: 12eca1e3a04347243a8272bb2bfb9792, type: 3}
     Volumn: 1
     loop: 0
-  - name: player_run
+  - name: player_walk_rock
+    clip: {fileID: 8300000, guid: 459817cfdab3c2441a4fd2debbd3fea0, type: 3}
+    Volumn: 1
+    loop: 0
+  - name: player_walk_wood
+    clip: {fileID: 8300000, guid: 71e5f79d0cfd45442a889cec916dfcbe, type: 3}
+    Volumn: 1
+    loop: 0
+  - name: background
     clip: {fileID: 8300000, guid: 54cc90901569bc34f8719081c9749779, type: 3}
     Volumn: 1
-    loop: 0
+    loop: 1
 --- !u!1 &6454370040049424550
 GameObject:
   m_ObjectHideFlags: 0

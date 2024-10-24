@@ -74,6 +74,11 @@ public class AudioManager : MonoBehaviour
             GameObject soundObject = new GameObject("사운드 파일 이름 : " + i + " = " + sounds[i].name);
             sounds[i].SetSource(soundObject.AddComponent<AudioSource>());
             soundObject.transform.SetParent(this.transform);
+
+            if (sounds[i].name == "background")
+            {
+                sounds[i].Play();
+            }
         }
     }
 

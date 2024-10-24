@@ -40485,6 +40485,30 @@ PrefabInstance:
       propertyPath: manager
       value: 
       objectReference: {fileID: 271681629}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: woodTilemaps.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: grassTilemaps.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: woodTilemaps.Array.data[0]
+      value: 
+      objectReference: {fileID: 1649741642}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: grassTilemaps.Array.data[0]
+      value: 
+      objectReference: {fileID: 1643833459}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: grassTilemaps.Array.data[1]
+      value: 
+      objectReference: {fileID: 938079895}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: grassTilemaps.Array.data[2]
+      value: 
+      objectReference: {fileID: 185158393}
     - target: {fileID: 3779406437340744730, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
       propertyPath: m_Name
       value: Player

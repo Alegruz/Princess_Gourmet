@@ -10952,6 +10952,14 @@ PrefabInstance:
       propertyPath: manager
       value: 
       objectReference: {fileID: 4982403107013603103}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: grassTilemap
+      value: 
+      objectReference: {fileID: 1042277392}
+    - target: {fileID: 109991935415391094, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
+      propertyPath: grassTilemapOrNull
+      value: 
+      objectReference: {fileID: 1042277392}
     - target: {fileID: 3779406437340744730, guid: 344e61ea27af27044b4794bc18b4c419, type: 3}
       propertyPath: m_Name
       value: Player
