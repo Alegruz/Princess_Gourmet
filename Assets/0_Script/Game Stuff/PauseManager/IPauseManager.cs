@@ -13,6 +13,8 @@ public class IPauseManager : MonoBehaviour
     protected bool isInventoryPressed;
     private static bool isPausable = true;
 
+    private AudioManager mAudioManager = null;
+
     //Start is called before the first frame update
     void Start()
     {
@@ -53,7 +55,12 @@ public class IPauseManager : MonoBehaviour
         if (currentActiveGameObject == null || (currentActiveGameObject == GameObjectToPause && (bOpeningSubGameObject || currentSubGameObject == null)))
         {
             isPaused = !isPaused;
-            if(isPaused)
+            if (mAudioManager == null)
+            {
+                mAudioManager = FindObjectOfType<AudioManager>();
+            }
+            mAudioManager.Play("page turn");
+            if (isPaused)
             {
                 isPaused = true;
                 GameObjectToPause.SetActive(true);
@@ -89,5 +96,10 @@ public class IPauseManager : MonoBehaviour
     public static void SetPausable(bool value)
     {
         isPausable = value;
+    }
+
+    public AudioManager GetAudioManager()
+    {
+        return mAudioManager;
     }
 }

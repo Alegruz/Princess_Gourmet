@@ -16,6 +16,7 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     public InventoryItem thisItem;
     public InventoryManager thisManager;
     public CraftingManager craftingManager;
+    private AudioManager mAudioManager = null;
 
     public void Setup(InventoryItem newItem, InventoryManager newManager, CraftingManager inCraftingManager)
     {
@@ -33,9 +34,12 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerDownHa
     {
         if (thisItem)
         {
-            if (craftingManager.isActiveAndEnabled)
+            if (craftingManager != null)
             {
-                craftingManager.OnMouseDownItem(this);
+                if (craftingManager.isActiveAndEnabled)
+                {
+                    craftingManager.OnMouseDownItem(this);
+                }
             }
         }
     }
@@ -50,6 +54,15 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerDownHa
             {
                 thisManager.SetupDescriptionAndButton(thisItem.itemDescription, thisItem.usable, thisItem);
                 thisManager.SetupNameAndButton(thisItem.itemName, thisItem.usable, thisItem);
+            }
+
+            if (craftingManager == null)
+            {
+                if (mAudioManager == null)
+                {
+                    mAudioManager = FindObjectOfType<AudioManager>();
+                }
+                mAudioManager.Play("cursor");
             }
         }
     }

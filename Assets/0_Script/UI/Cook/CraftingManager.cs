@@ -192,6 +192,8 @@ public class CraftingManager : MonoBehaviour
         {
             if(currentItemSlot != null)
             {
+                pauseCookManager.GetAudioManager().Play("cursor");
+
                 if (isDraggingFromCraftingCanvas)
                 {
                     currentItemSlot.thisItem.numberHeld++;
@@ -591,6 +593,8 @@ public class CraftingManager : MonoBehaviour
 
                 customCursor.sprite = currentItemSlot.thisItem.itemImage;
                 customCursor.gameObject.SetActive(true);
+
+                pauseCookManager.GetAudioManager().Play("cursor");
             }
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [System.Serializable] //커스컴 클래스는 유니티 인스펙터 창에서 안나온다. 강제로 나오게 하는 것.
 public class Sound
@@ -27,7 +28,15 @@ public class Sound
             source.volume = Volumn;
         }
     }
+    public float GetVolume()
+    {
+        if (source != null)
+        {
+            return source.volume;
+        }
 
+        return 0.0f;
+    }
 
     public void Play()
     {
@@ -60,6 +69,16 @@ public class Sound
             source.loop = false;
         }
     }
+
+    public bool IsPlaying()
+    {
+        if (source != null)
+        {
+            return source.isPlaying;
+        }
+
+        return false;
+    }
 }
 
 public class AudioManager : MonoBehaviour
@@ -75,6 +94,7 @@ public class AudioManager : MonoBehaviour
             sounds[i].SetSource(soundObject.AddComponent<AudioSource>());
             soundObject.transform.SetParent(this.transform);
 
+            sounds[i].SetVolumn();
             if (sounds[i].name == "background")
             {
                 sounds[i].Play();
@@ -141,5 +161,30 @@ public class AudioManager : MonoBehaviour
                 return;
             }
         }
+    }
+    
+    public float GetVolume(string _name)
+    {
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (_name == sounds[i].name)
+            {
+                return sounds[i].GetVolume();
+            }
+        }
+
+        return 0.0f;
+    }
+
+    public bool IsPlaying(string _name)
+    {
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (_name == sounds[i].name)
+            {
+                return sounds[i].IsPlaying();
+            }
+        }
+        return false;
     }
 }
